@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import Sidebar from "./components/Sidebar"
 import Editor from "./components/Editor"
 import Split from "react-split"
@@ -43,7 +43,16 @@ export default function App() {
 
     }, [currentNote])
 
-    
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (tempNoteText !== currentNote.body){
+                updateNote(tempNoteText);
+            }
+            
+        }, 5000);
+
+        return () => clearTimeout(timeoutId);
+    }, [tempNoteText])
 
     async function createNewNote() {
         const newNote = {
