@@ -8,8 +8,7 @@ import { notesCollection, db } from "./firebase";
 export default function App() {
     const [notes, setNotes] = React.useState([])
     const [currentNoteId, setCurrentNoteId] = React.useState("")
-
-    console.log(currentNoteId);
+    const [tempNoteText, setTempNoteText] = React.useState("");
 
     const currentNote = 
         notes.find(note => note.id === currentNoteId) 
@@ -36,6 +35,15 @@ export default function App() {
             setCurrentNoteId(notes[0]?.id);
         }
     }, [notes])
+
+    React.useEffect(() => {
+        if(currentNote){
+            setTempNoteText(currentNote.body);
+        }
+
+    }, [currentNote])
+
+    
 
     async function createNewNote() {
         const newNote = {
@@ -76,8 +84,8 @@ export default function App() {
                         />
                         {
                             <Editor
-                                currentNote={currentNote}
-                                updateNote={updateNote}
+                            tempNoteText={tempNoteText}
+                            setTempNoteText={setTempNoteText}
                             />
                         }
                     </Split>
